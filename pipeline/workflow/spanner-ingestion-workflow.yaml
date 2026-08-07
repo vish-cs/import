@@ -51,6 +51,14 @@ main:
                         body:
                           importList: ${import_list}
                       result: import_info
+                  - check_empty_imports:
+                      switch:
+                        - condition: ${len(import_info.body) == 0}
+                          return:
+                            status: "SKIPPED"
+                            message: "No staging imports found to ingest"
+                            jobId: "N/A"
+                            importList: []
                   - update_ingestion_history_pending:
                       call: http.post
                       args:
